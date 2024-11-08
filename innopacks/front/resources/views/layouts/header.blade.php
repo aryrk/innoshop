@@ -114,6 +114,11 @@
                                     clearInterval(interval);
                                 }
                             }, 500);
+
+                            setTimeout(() => {
+                                removePlaceholderGlow();
+                                clearInterval(interval);
+                            }, 5000);
                         }
                     }
                 }
@@ -160,7 +165,6 @@
                     }, 'google_translate_element');
 
                     setTimeout(() => {
-                        // setLanguage('id');
 
                         const savedLanguage = sessionStorage.getItem('selectedLanguage');
                         if (savedLanguage) {
