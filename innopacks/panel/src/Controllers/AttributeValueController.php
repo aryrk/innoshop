@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InnoShop\Common\Models\Attribute\Value;
 use InnoShop\Common\Repositories\Attribute\ValueRepo;
+use InnoShop\Panel\Helpers\TranslationHelper;
 
 class AttributeValueController extends BaseController
 {
@@ -24,9 +25,11 @@ class AttributeValueController extends BaseController
     {
         try {
             $data   = $request->all();
+            $data   = TranslationHelper::translateAllToEnglish($data);
             $values = $data['values'] ?? [];
 
             $attributeID = $data['attribute_id'] ?? 0;
+
 
             ValueRepo::getInstance()->createAttribute($attributeID, $values);
 
@@ -45,6 +48,7 @@ class AttributeValueController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             ValueRepo::getInstance()->updateTranslations($attributeValue, $data['values'] ?? []);
 
             return update_json_success();

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use InnoShop\Common\Models\Attribute;
 use InnoShop\Common\Repositories\Attribute\GroupRepo;
 use InnoShop\Common\Repositories\AttributeRepo;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\AttributeRequest;
 
 class AttributeController extends BaseController
@@ -55,6 +56,7 @@ class AttributeController extends BaseController
     {
         try {
             $data      = $request->all();
+            $data     = TranslationHelper::translateAllToEnglish($data);
             $attribute = AttributeRepo::getInstance()->create($data);
 
             return redirect(panel_route('attributes.index'))
@@ -103,6 +105,7 @@ class AttributeController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             AttributeRepo::getInstance()->update($attribute, $data);
 
             return redirect(panel_route('attributes.index'))

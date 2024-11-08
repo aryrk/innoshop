@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoShop\Common\Models\Customer\Group as CustomerGroup;
 use InnoShop\Common\Repositories\Customer;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\CustomerGroupRequest;
 use Throwable;
 
@@ -55,7 +56,7 @@ class CustomerGroupController
     {
         try {
             $data = $request->all();
-
+            $data = TranslationHelper::translateAllToEnglish($data);
             $customerGroup = Customer\GroupRepo::getInstance()->create($data);
 
             return redirect(panel_route('groups.index'))
@@ -101,6 +102,7 @@ class CustomerGroupController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             Customer\GroupRepo::getInstance()->update($customerGroup, $data);
 
             return redirect(panel_route('groups.index'))

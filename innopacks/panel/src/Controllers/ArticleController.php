@@ -15,6 +15,7 @@ use InnoShop\Common\Models\Article;
 use InnoShop\Common\Repositories\ArticleRepo;
 use InnoShop\Common\Repositories\CatalogRepo;
 use InnoShop\Common\Resources\CatalogSimple;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\ArticleRequest;
 
 class ArticleController extends BaseController
@@ -55,6 +56,7 @@ class ArticleController extends BaseController
     {
         try {
             $data    = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             $article = ArticleRepo::getInstance()->create($data);
 
             return redirect(panel_route('articles.index'))
@@ -100,6 +102,7 @@ class ArticleController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             ArticleRepo::getInstance()->update($article, $data);
 
             return redirect(panel_route('articles.index'))

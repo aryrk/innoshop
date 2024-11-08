@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use InnoShop\Common\Models\Category;
 use InnoShop\Common\Repositories\CategoryRepo;
 use InnoShop\Common\Resources\CategorySimple;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\CategoryRequest;
 
 class CategoryController extends BaseController
@@ -60,6 +61,7 @@ class CategoryController extends BaseController
     {
         try {
             $data     = $request->all();
+            $data     = TranslationHelper::translateAllToEnglish($data);
             $category = CategoryRepo::getInstance()->create($data);
 
             return redirect(panel_route('categories.index'))
@@ -105,6 +107,7 @@ class CategoryController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             CategoryRepo::getInstance()->update($category, $data);
 
             return redirect(panel_route('categories.index'))

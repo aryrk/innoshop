@@ -22,6 +22,7 @@ use InnoShop\Common\Repositories\TaxClassRepo;
 use InnoShop\Common\Resources\AttributeSimple;
 use InnoShop\Common\Resources\AttributeValueSimple;
 use InnoShop\Common\Resources\SkuListItem;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\ProductRequest;
 
 class ProductController extends BaseController
@@ -62,6 +63,7 @@ class ProductController extends BaseController
     {
         try {
             $data    = $request->all();
+            $data    = TranslationHelper::translateAllToEnglish($data);
             $product = ProductRepo::getInstance()->create($data);
 
             return redirect(panel_route('products.index'))
@@ -123,6 +125,7 @@ class ProductController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             ProductRepo::getInstance()->update($product, $data);
 
             return redirect(panel_route('products.index'))

@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoShop\Common\Models\Tag;
 use InnoShop\Common\Repositories\TagRepo;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\TagRequest;
 
 class TagController extends BaseController
@@ -56,6 +57,7 @@ class TagController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             TagRepo::getInstance()->create($data);
 
             return back()->with('success', panel_trans('common.updated_success'));
@@ -86,6 +88,7 @@ class TagController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             TagRepo::getInstance()->update($tag, $data);
 
             return back()->with('success', panel_trans('common.updated_success'));

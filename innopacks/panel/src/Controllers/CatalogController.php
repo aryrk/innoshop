@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use InnoShop\Common\Models\Catalog;
 use InnoShop\Common\Repositories\CatalogRepo;
 use InnoShop\Common\Resources\CatalogSimple;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\CatalogRequest;
 
 class CatalogController extends BaseController
@@ -54,6 +55,7 @@ class CatalogController extends BaseController
     {
         try {
             $data    = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             $catalog = CatalogRepo::getInstance()->create($data);
 
             return redirect(panel_route('catalogs.index'))
@@ -101,6 +103,7 @@ class CatalogController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             CatalogRepo::getInstance()->update($catalog, $data);
 
             return redirect(panel_route('catalogs.index'))

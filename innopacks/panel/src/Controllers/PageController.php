@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use InnoShop\Common\Models\Page;
 use InnoShop\Common\Repositories\PageRepo;
+use InnoShop\Panel\Helpers\TranslationHelper;
 use InnoShop\Panel\Requests\PageRequest;
 
 class PageController extends BaseController
@@ -56,6 +57,7 @@ class PageController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             PageRepo::getInstance()->create($data);
 
             return back()->with('success', panel_trans('common.updated_success'));
@@ -86,6 +88,7 @@ class PageController extends BaseController
     {
         try {
             $data = $request->all();
+            $data = TranslationHelper::translateAllToEnglish($data);
             $page = PageRepo::getInstance()->update($page, $data);
 
             return redirect(panel_route('pages.index'))

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use InnoShop\Common\Models\Attribute;
 use InnoShop\Common\Models\Attribute\Group;
 use InnoShop\Common\Repositories\Attribute\GroupRepo;
+use InnoShop\Panel\Helpers\TranslationHelper;
 
 class AttributeGroupController extends BaseController
 {
@@ -50,7 +51,9 @@ class AttributeGroupController extends BaseController
      */
     public function update(Request $request, Attribute\Group $attributeGroup): JsonResponse
     {
-        GroupRepo::getInstance()->update($attributeGroup, $request->all());
+        $data = $request->all();
+        $data = TranslationHelper::translateAllToEnglish($data);
+        GroupRepo::getInstance()->update($attributeGroup, $data);
 
         return json_success(trans('common.updated_success'));
     }
