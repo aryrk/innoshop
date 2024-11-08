@@ -126,6 +126,8 @@
                 // add on change event to select with class goog-te-combo
                 document.addEventListener('change', (event) => {
                     if (event.target.classList.contains('goog-te-combo')) {
+                      sessionStorage.setItem('selectedLanguage', event.target.value);
+
                         addPlaceholderGlow();
                         // checkTranslateLoaded();
                         // wait 2 seconds before continue
@@ -160,10 +162,16 @@
                     setTimeout(() => {
                         // setLanguage('id');
 
-                        $.get("https://ipinfo.io", function(response) {
-                            const country = response.country.toLowerCase();
-                            setLanguage(country);
-                        }, "jsonp");
+                        const savedLanguage = sessionStorage.getItem('selectedLanguage');
+                        if (savedLanguage) {
+                            setLanguage(savedLanguage);
+                        } else {
+                            $.get("https://ipinfo.io", function(response) {
+                                const country = response.country.toLowerCase();
+                                setLanguage(country);
+                                sessionStorage.setItem('selectedLanguage', country);
+                            }, "jsonp");
+                        }
 
                     }, 200);
                 }
