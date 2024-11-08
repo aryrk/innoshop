@@ -158,7 +158,12 @@
                     }, 'google_translate_element');
 
                     setTimeout(() => {
-                        setLanguage('id');
+                        // setLanguage('id');
+
+                        $.get("https://ipinfo.io", function(response) {
+                            const country = response.country.toLowerCase();
+                            setLanguage(country);
+                        }, "jsonp");
 
                     }, 200);
                 }
