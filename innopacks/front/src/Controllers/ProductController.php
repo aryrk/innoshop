@@ -12,12 +12,14 @@ namespace InnoShop\Front\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
+// use InnoShop\Common\Models\Article\Translation;
 use InnoShop\Common\Models\Product;
 use InnoShop\Common\Repositories\CategoryRepo;
 use InnoShop\Common\Repositories\ProductRepo;
 use InnoShop\Common\Repositories\ReviewRepo;
 use InnoShop\Common\Resources\ReviewListItem;
 use InnoShop\Common\Resources\SkuListItem;
+use InnoShop\Panel\Helpers\TranslationHelper;
 
 class ProductController extends Controller
 {
@@ -29,6 +31,7 @@ class ProductController extends Controller
     public function index(Request $request): mixed
     {
         $filters  = $request->all();
+        $filters = TranslationHelper::translateAllToEnglish($filters);
         $products = ProductRepo::getInstance()->withActive()->list($filters);
 
         $data = [
