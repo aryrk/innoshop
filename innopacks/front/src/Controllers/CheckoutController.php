@@ -11,6 +11,7 @@ namespace InnoShop\Front\Controllers;
 
 use App\Http\Controllers\Controller;
 use Exception;
+use Http;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use InnoShop\Common\Exceptions\Unauthorized;
@@ -30,11 +31,31 @@ class CheckoutController extends Controller
      */
     public function index(): mixed
     {
+
+
         try {
             $checkout = CheckoutService::getInstance();
-            $result   = $checkout->getCheckoutResult();
+            $result = $checkout->getCheckoutResult();
+
             if (empty($result['cart_list'])) {
                 return redirect(front_route('carts.index'))->withErrors(['error' => 'Empty Cart']);
+            }
+            try {
+                $response = Http::withHeaders([
+                    'Authorization' => env('ONESIGNAL_AUTH_KEY'),
+                    'accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ])->post('https://onesignal.com/api/v1/notifications', [
+                            'app_id' => env('ONESIGNAL_APP_ID'),
+                            'included_segments' => ['All'],
+                            'contents' => ['en' => 'Item "' . $result['cart_list'][0]['product_name'] . '" has been added to cart'],
+                            'chrome_web_image' => $result['cart_list'][0]['image'],
+                            'chrome_web_icon' => $result['cart_list'][0]['image'],
+                            'url' => 'https://www.innoshop.com',
+                        ]);
+
+            } catch (Exception $e) {
+                return redirect(front_route('carts.index'))->withErrors(['error' => $e->getMessage()]);
             }
 
             return inno_view('checkout.index', $result);
@@ -54,7 +75,7 @@ class CheckoutController extends Controller
      */
     public function update(Request $request): JsonResponse
     {
-        $data     = $request->all();
+        $data = $request->all();
         $checkout = CheckoutService::getInstance();
         $checkout->updateValues($data);
         $result = $checkout->getCheckoutResult();
@@ -73,7 +94,7 @@ class CheckoutController extends Controller
     {
         try {
             $checkout = CheckoutService::getInstance();
-            $data     = $request->all();
+            $data = $request->all();
             if ($data) {
                 $checkout->updateValues($data);
             }
@@ -96,7 +117,7 @@ class CheckoutController extends Controller
     public function success(Request $request): mixed
     {
         $orderNumber = $request->get('order_number');
-        $data        = [
+        $data = [
             'order' => OrderRepo::getInstance()->builder(['number' => $orderNumber])->firstOrFail(),
         ];
 
