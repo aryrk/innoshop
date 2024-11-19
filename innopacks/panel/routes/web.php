@@ -9,11 +9,13 @@
 
 use Illuminate\Support\Facades\Route;
 use InnoShop\Panel\Controllers;
+use InnoShop\Panel\Controllers\ReviewController;
 
 Route::get('login', [Controllers\LoginController::class, 'index'])->name('login.index');
 Route::post('login', [Controllers\LoginController::class, 'store'])->name('login.store');
+Route::get('reviews/latest', [Controllers\ReviewController::class, 'latest'])->name('reviews.latest');
 
-Route::middleware(['admin_auth:admin'])
+Route::middleware(['auth:admin'])
     ->group(function () {
         Route::get('logout', [Controllers\LogoutController::class, 'index'])->name('logout.index');
 

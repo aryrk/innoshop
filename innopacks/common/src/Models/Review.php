@@ -11,6 +11,7 @@ namespace InnoShop\Common\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use InnoShop\Common\Models\Order\Item;
+use InnoShop\Common\Models\Review;
 
 class Review extends BaseModel
 {
